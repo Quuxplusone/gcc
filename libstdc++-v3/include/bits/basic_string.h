@@ -83,6 +83,34 @@ _GLIBCXX_BEGIN_NAMESPACE_CXX11
    *  <a href="tables.html#68">optional sequence requirements</a>, only
    *  @c push_back, @c at, and @c %array access are supported.
    */
+
+
+  template<class _Char_alloc_type, typename _Traits2, typename _Dummy_for_PR85282>
+    struct _Alloc_traits_impl : __gnu_cxx::__alloc_traits<_Char_alloc_type>
+    {
+      typedef __gnu_cxx::__alloc_traits<_Char_alloc_type> _Base;
+
+      [[__gnu__::__always_inline__]]
+      static constexpr typename _Base::pointer
+      allocate(_Char_alloc_type& __a, typename _Base::size_type __n)
+      {
+	typename _Base::pointer __p = _Base::allocate(__a, __n);
+	if (std::is_constant_evaluated())
+	  // Begin the lifetime of characters in allocated storage.
+	  for (typename _Base::size_type __i = 0; __i < __n; ++__i)
+	    std::construct_at(__builtin_addressof(__p[__i]));
+	return __p;
+      }
+    };
+
+  template<class _Char_alloc_type, class _CharT, typename _Dummy_for_PR85282>
+    struct _Alloc_traits_impl<_Char_alloc_type, char_traits<_CharT>, _Dummy_for_PR85282>
+    : __gnu_cxx::__alloc_traits<_Char_alloc_type>
+    {
+      // std::char_traits begins the lifetime of characters.
+    };
+
+
   template<typename _CharT, typename _Traits, typename _Alloc>
     class basic_string
     {
@@ -98,32 +126,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CXX11
 #if __cpp_lib_constexpr_string < 201907L
       typedef __gnu_cxx::__alloc_traits<_Char_alloc_type> _Alloc_traits;
 #else
-      template<typename _Traits2, typename _Dummy_for_PR85282>
-	struct _Alloc_traits_impl : __gnu_cxx::__alloc_traits<_Char_alloc_type>
-	{
-	  typedef __gnu_cxx::__alloc_traits<_Char_alloc_type> _Base;
-
-	  [[__gnu__::__always_inline__]]
-	  static constexpr typename _Base::pointer
-	  allocate(_Char_alloc_type& __a, typename _Base::size_type __n)
-	  {
-	    pointer __p = _Base::allocate(__a, __n);
-	    if (std::is_constant_evaluated())
-	      // Begin the lifetime of characters in allocated storage.
-	      for (size_type __i = 0; __i < __n; ++__i)
-		std::construct_at(__builtin_addressof(__p[__i]));
-	    return __p;
-	  }
-	};
-
-      template<typename _Dummy_for_PR85282>
-	struct _Alloc_traits_impl<char_traits<_CharT>, _Dummy_for_PR85282>
-	: __gnu_cxx::__alloc_traits<_Char_alloc_type>
-	{
-	  // std::char_traits begins the lifetime of characters.
-	};
-
-      using _Alloc_traits = _Alloc_traits_impl<_Traits, void>;
+      using _Alloc_traits = _Alloc_traits_impl<_Char_alloc_type, _Traits, void>;
 #endif
 
       // Types:
