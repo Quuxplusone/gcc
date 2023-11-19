@@ -56,6 +56,21 @@
 # define _GLIBCXX_NORETURN __attribute__ ((__noreturn__))
 #endif
 
+#if defined(_GLIBCXX_TRIVIALLY_RELOCATABLE_IF)
+# ifndef _GLIBCXX_TRIVIALLY_RELOCATABLE
+#  define _GLIBCXX_TRIVIALLY_RELOCATABLE _GLIBCXX_TRIVIALLY_RELOCATABLE_IF(true)
+# endif
+#elif defined(_GLIBCXX_TRIVIALLY_RELOCATABLE)
+# warning "You probably meant to define _GLIBCXX_TRIVIALLY_RELOCATABLE_IF instead"
+# define _GLIBCXX_TRIVIALLY_RELOCATABLE_IF(x)
+#elif defined(__cpp_impl_trivially_relocatable)
+# define _GLIBCXX_TRIVIALLY_RELOCATABLE_IF(x) [[__trivially_relocatable__(x)]]
+# define _GLIBCXX_TRIVIALLY_RELOCATABLE [[__trivially_relocatable__]]
+#else
+# define _GLIBCXX_TRIVIALLY_RELOCATABLE_IF(x)
+# define _GLIBCXX_TRIVIALLY_RELOCATABLE
+#endif // defined(_GLIBCXX_TRIVIALLY_RELOCATABLE_IF)
+
 // See below for C++
 #ifndef _GLIBCXX_NOTHROW
 # ifndef __cplusplus
