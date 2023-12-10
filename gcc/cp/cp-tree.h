@@ -8752,6 +8752,7 @@ extern bool std_layout_type_p			(const_tree);
 extern bool trivial_type_p			(const_tree);
 extern bool implicit_lifetime_type_p		(tree);
 extern bool trivially_copyable_p		(const_tree);
+extern bool trivially_relocatable_p		(const_tree);
 extern bool trivially_copy_constructible_p	(tree);
 extern bool has_trivial_abi_attribute		(tree);
 extern void validate_trivial_abi_attribute	(tree);
