@@ -1076,12 +1076,6 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       __traits::destroy(__alloc, std::__addressof(*__orig));
     }
 
-  // This class may be specialized for specific types.
-  // Also known as is_trivially_relocatable.
-  template<typename _Tp, typename = void>
-    struct __is_bitwise_relocatable
-    : is_trivial<_Tp> { };
-
   template <typename _InputIterator, typename _ForwardIterator,
 	    typename _Allocator>
     _GLIBCXX20_CONSTEXPR
@@ -1108,7 +1102,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 #if _GLIBCXX_HOSTED
   template <typename _Tp, typename _Up>
     _GLIBCXX20_CONSTEXPR
-    inline __enable_if_t<std::__is_bitwise_relocatable<_Tp>::value, _Tp*>
+    inline __enable_if_t<is_trivially_relocatable<_Tp>::value, _Tp*>
     __relocate_a_1(_Tp* __first, _Tp* __last,
 		   _Tp* __result,
 		   [[__maybe_unused__]] allocator<_Up>& __alloc) noexcept
