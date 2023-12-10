@@ -172,7 +172,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    * pointer see `std::shared_ptr::owner_before` and `std::owner_less`.
   */
   template<typename _Tp>
-    class shared_ptr : public __shared_ptr<_Tp>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE shared_ptr : public __shared_ptr<_Tp>
     {
       template<typename... _Args>
 	using _Constructible = typename enable_if<
@@ -807,7 +807,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    * object after it has been destroyed.
    */
   template<typename _Tp>
-    class weak_ptr : public __weak_ptr<_Tp>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE weak_ptr : public __weak_ptr<_Tp>
     {
       template<typename _Arg>
 	using _Constructible = typename enable_if<
