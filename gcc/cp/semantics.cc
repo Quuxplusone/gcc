@@ -13890,6 +13890,9 @@ trait_expr_value (cp_trait_kind kind, tree type1, tree type2)
     case CPTK_IS_TRIVIALLY_DESTRUCTIBLE:
       return is_trivially_xible (BIT_NOT_EXPR, type1, NULL_TREE);
 
+    case CPTK_IS_TRIVIALLY_RELOCATABLE:
+      return trivially_relocatable_p (type1);
+
     case CPTK_IS_UNBOUNDED_ARRAY:
       return array_of_unknown_bound_p (type1);
 

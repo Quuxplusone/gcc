@@ -3304,6 +3304,9 @@ diagnose_trait_expr (location_t loc, tree expr, tree args)
       inform (loc, "%qT is not trivially destructible, because", t1);
       is_trivially_xible (BIT_NOT_EXPR, t1, NULL_TREE, /*explain=*/true);
       break;
+    case CPTK_IS_TRIVIALLY_RELOCATABLE:
+      inform (loc, "  %qT is not trivially relocatable", t1);
+      break;
     case CPTK_IS_UNBOUNDED_ARRAY:
       inform (loc, "%qT is not an unbounded array", t1);
       break;
