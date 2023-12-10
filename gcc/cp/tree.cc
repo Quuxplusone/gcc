@@ -4631,6 +4631,17 @@ trivially_copyable_p (const_tree t)
     return scalarish_type_p (t);
 }
 
+/* Returns 1 iff type T is a trivially relocatable type, as defined in
+   [basic.types] and [class.prop].  For now, this just reports trivially
+   copyable types, and ignores anything to do with transitivity or
+   attributes. TODO FIXME BUG HACK. */
+
+bool
+trivially_relocatable_p (const_tree t)
+{
+  return trivially_copyable_p (t);
+}
+
 /* Returns 1 iff type T is a trivial type, as defined in [basic.types] and
    [class].  */
 
