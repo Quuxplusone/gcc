@@ -53,7 +53,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   /// Provides input iterator semantics for streams.
   template<typename _Tp, typename _CharT = char,
            typename _Traits = char_traits<_CharT>, typename _Dist = ptrdiff_t>
-    class istream_iterator
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF(is_trivially_relocatable_v<_Tp>) istream_iterator
     : public iterator<input_iterator_tag, _Tp, _Dist, const _Tp*, const _Tp&>
     {
     public:
@@ -193,7 +193,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   */
   template<typename _Tp, typename _CharT = char,
            typename _Traits = char_traits<_CharT> >
-    class ostream_iterator
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE ostream_iterator
     : public iterator<output_iterator_tag, void, void, void, void>
     {
     public:
