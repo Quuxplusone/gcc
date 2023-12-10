@@ -139,7 +139,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    * @headerfile thread
    * @since C++20
    */
-  class jthread
+  class _GLIBCXX_TRIVIALLY_RELOCATABLE jthread
   {
   public:
     using id = thread::id;

@@ -59,7 +59,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    *  This library supports efficient construction and copying of locales
    *  through a reference counting implementation of the locale class.
   */
-  class locale
+  class _GLIBCXX_TRIVIALLY_RELOCATABLE locale
   {
   public:
     // Types:

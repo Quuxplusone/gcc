@@ -318,7 +318,7 @@ namespace __expected
 /// @endcond
 
   template<typename _Tp, typename _Er>
-    class expected
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF(is_trivially_relocatable_v<_Tp> && is_trivially_relocatable_v<_Er>) expected
     {
       static_assert( ! is_reference_v<_Tp> );
       static_assert( ! is_function_v<_Tp> );
@@ -1235,7 +1235,7 @@ namespace __expected
 
   // Partial specialization for std::expected<cv void, E>
   template<typename _Tp, typename _Er> requires is_void_v<_Tp>
-    class expected<_Tp, _Er>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF(is_trivially_relocatable_v<_Er>) expected<_Tp, _Er>
     {
       static_assert( __expected::__can_be_unexpected<_Er> );
 

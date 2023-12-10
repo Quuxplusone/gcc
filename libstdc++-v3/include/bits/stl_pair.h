@@ -183,7 +183,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    * @headerfile utility
    */
   template<typename _T1, typename _T2>
-    struct pair
+    struct _GLIBCXX_TRIVIALLY_RELOCATABLE_IF(is_trivially_relocatable<_T1>::value && is_trivially_relocatable<_T2>::value) pair
     : public __pair_base<_T1, _T2>
     {
       typedef _T1 first_type;    ///< The type of the `first` member

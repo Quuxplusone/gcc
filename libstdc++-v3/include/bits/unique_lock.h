@@ -57,7 +57,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    * @since C++11
    */
   template<typename _Mutex>
-    class unique_lock
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE unique_lock
     {
     public:
       typedef _Mutex mutex_type;

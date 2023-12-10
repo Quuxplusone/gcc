@@ -728,7 +728,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /// shared_lock
   template<typename _Mutex>
-    class shared_lock
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE shared_lock
     {
     public:
       typedef _Mutex mutex_type;

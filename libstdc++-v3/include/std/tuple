@@ -750,7 +750,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /// Primary class template, tuple
   template<typename... _Elements>
-    class tuple : public _Tuple_impl<0, _Elements...>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF((__and_<is_trivially_relocatable<_Elements>...>::value))
+          tuple : public _Tuple_impl<0, _Elements...>
     {
       typedef _Tuple_impl<0, _Elements...> _Inherited;
 
@@ -1236,7 +1237,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   /// Partial specialization, 2-element tuple.
   /// Includes construction and assignment from a pair.
   template<typename _T1, typename _T2>
-    class tuple<_T1, _T2> : public _Tuple_impl<0, _T1, _T2>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF(is_trivially_relocatable<_T1>::value && is_trivially_relocatable<_T2>::value)
+          tuple<_T1, _T2> : public _Tuple_impl<0, _T1, _T2>
     {
       typedef _Tuple_impl<0, _T1, _T2> _Inherited;
 
