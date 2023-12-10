@@ -57,6 +57,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    *  @{
    */
 
+#ifdef _GLIBCXX_HAS_GTHREADS
+  typedef __gthread_t __thread_native_handle_type;
+#else
+  typedef int __thread_native_handle_type;
+#endif
+
   /** A std::thread represents a new thread of execution.
    *
    * The default constructor creates an object that does not own a thread.
@@ -75,14 +81,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    * @headerfile thread
    * @since C++11
    */
-  class thread
+  class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF(is_trivially_relocatable<__thread_native_handle_type>::value) thread
   {
   public:
-#ifdef _GLIBCXX_HAS_GTHREADS
-    using native_handle_type = __gthread_t;
-#else
-    using native_handle_type = int;
-#endif
+    using native_handle_type = __thread_native_handle_type;
 
     /** A std::thread::id is a unique identifier for a thread.
      *

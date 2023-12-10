@@ -700,7 +700,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     * @brief Class template for optional values.
     */
   template<typename _Tp>
-    class optional
+    class
+          _GLIBCXX_TRIVIALLY_RELOCATABLE_IF((is_trivially_relocatable_v<_Tp>))
+          optional
     : private _Optional_base<_Tp>,
       private _Enable_copy_move<
 	// Copy constructor.

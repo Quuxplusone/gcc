@@ -785,7 +785,8 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
    *  and we can use other standard algorithms as well.
   */
   template<typename _Tp, typename _Alloc = std::allocator<_Tp> >
-    class deque : protected _Deque_base<_Tp, _Alloc>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF((is_same<_Alloc, allocator<_Tp> >::value))
+          deque : protected _Deque_base<_Tp, _Alloc>
     {
 #ifdef _GLIBCXX_CONCEPT_CHECKS
       // concept requirements
@@ -2371,7 +2372,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
 _GLIBCXX_END_NAMESPACE_CONTAINER
 
-#if __cplusplus >= 201103L
+#if (__cplusplus >= 201103L) && !defined(__cpp_impl_trivially_relocatable)
   // std::allocator is safe, but it is not the only allocator
   // for which this is valid.
   template<class _Tp>
