@@ -391,7 +391,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       }
     };
 
-    struct _Stop_state_ref
+    struct _GLIBCXX_TRIVIALLY_RELOCATABLE _Stop_state_ref
     {
       _Stop_state_ref() = default;
 
@@ -477,7 +477,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   };
 
   /// A type that allows a stop request to be made.
-  class stop_source
+  class _GLIBCXX_TRIVIALLY_RELOCATABLE stop_source
   {
   public:
     stop_source() : _M_state(*this)

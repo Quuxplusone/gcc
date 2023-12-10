@@ -68,7 +68,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   // [indirect], class template indirect
   template<typename _Tp, typename _Alloc>
-    class indirect
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF((is_same_v<_Alloc, allocator<_Tp>>)) indirect
     {
       static_assert(is_object_v<_Tp>);
       static_assert(!is_array_v<_Tp>);
