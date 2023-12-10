@@ -61,7 +61,7 @@
 #include <bits/stl_iterator_base_funcs.h>
 #if __cplusplus >= 201103L
 #include <initializer_list>
-#include <bits/stl_uninitialized.h> // for __is_bitwise_relocatable
+#include <type_traits>
 #endif
 #if __cplusplus > 201703L
 # include <compare>
@@ -2375,7 +2375,7 @@ _GLIBCXX_END_NAMESPACE_CONTAINER
   // std::allocator is safe, but it is not the only allocator
   // for which this is valid.
   template<class _Tp>
-    struct __is_bitwise_relocatable<_GLIBCXX_STD_C::deque<_Tp>>
+    struct is_trivially_relocatable<_GLIBCXX_STD_C::deque<_Tp>>
     : true_type { };
 #endif
 
