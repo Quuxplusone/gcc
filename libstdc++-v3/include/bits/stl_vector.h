@@ -422,7 +422,8 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
    *  also provided as with C-style arrays.
   */
   template<typename _Tp, typename _Alloc = std::allocator<_Tp> >
-    class vector : protected _Vector_base<_Tp, _Alloc>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF((is_same<_Alloc, allocator<_Tp> >::value))
+          vector : protected _Vector_base<_Tp, _Alloc>
     {
 #ifdef _GLIBCXX_CONCEPT_CHECKS
       // Concept requirements.
