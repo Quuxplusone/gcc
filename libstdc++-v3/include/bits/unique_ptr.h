@@ -268,7 +268,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   /// @headerfile memory
   /// @since C++11
   template <typename _Tp, typename _Dp = default_delete<_Tp>>
-    class unique_ptr
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF((is_same<_Dp, default_delete<_Tp> >::value)) unique_ptr
     {
       template <typename _Up>
 	using _DeleterConstraint =
@@ -534,7 +534,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   /// @headerfile memory
   /// @since C++11
   template<typename _Tp, typename _Dp>
-    class unique_ptr<_Tp[], _Dp>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF((is_same<_Dp, default_delete<_Tp[]> >::value)) unique_ptr<_Tp[], _Dp>
     {
       template <typename _Up>
       using _DeleterConstraint =

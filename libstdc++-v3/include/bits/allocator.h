@@ -70,7 +70,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    * @headerfile memory
    */
   template<>
-    class allocator<void>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE allocator<void>
     {
     public:
       typedef void        value_type;
@@ -125,7 +125,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    *  @headerfile memory
    */
   template<typename _Tp>
-    class allocator : public __allocator_base<_Tp>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE allocator : public __allocator_base<_Tp>
     {
     public:
       typedef _Tp        value_type;

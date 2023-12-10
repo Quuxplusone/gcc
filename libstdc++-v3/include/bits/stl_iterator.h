@@ -126,7 +126,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
    *  the requirement that the iterators must be safe.
   */
   template<typename _Iterator>
-    class reverse_iterator
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF(is_trivially_relocatable_v<_Iterator>) reverse_iterator
     : public iterator<typename iterator_traits<_Iterator>::iterator_category,
 		      typename iterator_traits<_Iterator>::value_type,
 		      typename iterator_traits<_Iterator>::difference_type,

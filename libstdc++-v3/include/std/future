@@ -782,7 +782,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /// Primary template for future.
   template<typename _Res>
-    class future : public __basic_future<_Res>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE future : public __basic_future<_Res>
     {
       // _GLIBCXX_RESOLVE_LIB_DEFECTS
       // 3458. Is shared_future intended to work with arrays or function types?
@@ -832,7 +832,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /// Partial specialization for future<R&>
   template<typename _Res>
-    class future<_Res&> : public __basic_future<_Res&>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE future<_Res&> : public __basic_future<_Res&>
     {
       friend class promise<_Res&>;
       template<typename> friend class packaged_task;
@@ -875,7 +875,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /// Explicit specialization for future<void>
   template<>
-    class future<void> : public __basic_future<void>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE future<void> : public __basic_future<void>
     {
       friend class promise<void>;
       template<typename> friend class packaged_task;
@@ -919,7 +919,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /// Primary template for shared_future.
   template<typename _Res>
-    class shared_future : public __basic_future<_Res>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE shared_future : public __basic_future<_Res>
     {
       // _GLIBCXX_RESOLVE_LIB_DEFECTS
       // 3458. Is shared_future intended to work with arrays or function types?
@@ -965,7 +965,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /// Partial specialization for shared_future<R&>
   template<typename _Res>
-    class shared_future<_Res&> : public __basic_future<_Res&>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE shared_future<_Res&> : public __basic_future<_Res&>
     {
       typedef __basic_future<_Res&>           _Base_type;
 
@@ -1004,7 +1004,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /// Explicit specialization for shared_future<void>
   template<>
-    class shared_future<void> : public __basic_future<void>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE shared_future<void> : public __basic_future<void>
     {
       typedef __basic_future<void> _Base_type;
 
@@ -1078,7 +1078,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /// Primary template for promise
   template<typename _Res>
-    class promise
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE promise
     {
       // _GLIBCXX_RESOLVE_LIB_DEFECTS
       // 3466: Specify the requirements for promise/future/[...] consistently
@@ -1204,7 +1204,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /// Partial specialization for promise<R&>
   template<typename _Res>
-    class promise<_Res&>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE promise<_Res&>
     {
       typedef __future_base::_State_base	_State;
       typedef __future_base::_Result<_Res&>	_Res_type;
@@ -1302,7 +1302,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /// Explicit specialization for promise<void>
   template<>
-    class promise<void>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE promise<void>
     {
       typedef __future_base::_State_base	_State;
       typedef __future_base::_Result<void>	_Res_type;

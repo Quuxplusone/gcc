@@ -734,7 +734,8 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
    *  also provided as with C-style arrays.
   */
   template<typename _Alloc>
-    class vector<bool, _Alloc> : protected _Bvector_base<_Alloc>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF((is_same<_Alloc, allocator<bool> >::value))
+          vector<bool, _Alloc> : protected _Bvector_base<_Alloc>
     {
       typedef _Bvector_base<_Alloc>			_Base;
       typedef typename _Base::_Bit_pointer		_Bit_pointer;

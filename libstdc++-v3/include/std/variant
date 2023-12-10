@@ -1359,7 +1359,7 @@ namespace __variant
   }
 
   template<typename... _Types>
-    class variant
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF((__and_<is_trivially_relocatable<_Types>...>::value)) variant
     : private __detail::__variant::_Variant_base<_Types...>,
       private _Enable_copy_move<
 	__detail::__variant::_Traits<_Types...>::_S_copy_ctor,
