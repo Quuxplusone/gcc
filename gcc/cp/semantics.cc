@@ -12417,6 +12417,9 @@ trait_expr_value (cp_trait_kind kind, tree type1, tree type2)
     case CPTK_IS_TRIVIALLY_COPYABLE:
       return trivially_copyable_p (type1);
 
+    case CPTK_IS_TRIVIALLY_RELOCATABLE:
+      return trivially_relocatable_p (type1);
+
     case CPTK_IS_UNION:
       return type_code1 == UNION_TYPE;
 
