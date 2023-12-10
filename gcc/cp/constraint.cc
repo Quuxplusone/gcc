@@ -3251,6 +3251,9 @@ diagnose_trait_expr (tree expr, tree args)
     case CPTK_IS_TRIVIALLY_DESTRUCTIBLE:
       inform (loc, "  %qT is not trivially destructible", t1);
       break;
+    case CPTK_IS_TRIVIALLY_RELOCATABLE:
+      inform (loc, "  %qT is not trivially relocatable", t1);
+      break;
     case CPTK_IS_UNBOUNDED_ARRAY:
       inform (loc, "  %qT is not an unbounded array", t1);
       break;
