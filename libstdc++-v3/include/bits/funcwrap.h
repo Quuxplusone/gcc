@@ -40,6 +40,7 @@
 #if __glibcxx_move_only_function || __glibcxx_copyable_function || __glibcxx_function_ref
 
 #include <bits/invoke.h>
+#include <bits/stl_construct.h>
 #include <bits/utility.h>
 
 namespace std _GLIBCXX_VISIBILITY(default)
@@ -328,8 +329,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	   case _Op::_Move:
 	     {
 	       _Tp* __obj = static_cast<_Tp*>(const_cast<void*>(__src->_M_addr()));
-	       ::new(__target._M_addr()) _Tp(std::move(*__obj));
-	       __obj->~_Tp();
+	       _Tp* __dstobj = static_cast<_Tp*>(__target._M_addr());
+	       std::relocate_at(__obj, __dstobj);
 	     }
 	     return;
 	   case _Op::_Destroy:
