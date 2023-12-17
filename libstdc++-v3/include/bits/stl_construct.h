@@ -152,6 +152,56 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 #endif
     }
 
+#if __cplusplus >= 201103L
+  // libstdc++ doesn't support type-traits (enable_if, is_same, __remove_cvref_t)
+  // in C++03 mode, so let's just skip these facilities for C++03.
+
+  template<class _Tp>
+  struct __destroy_guard {
+    _Tp *__t_;
+    explicit __destroy_guard(_Tp *__t) : __t_(__t) { }
+    ~__destroy_guard() { std::_Destroy(__t_); }
+  };
+
+  template<class _Tp>
+  _GLIBCXX_NODISCARD
+  __remove_cvref_t<_Tp> relocate(_Tp *__source)
+    _GLIBCXX_NOEXCEPT_IF(is_nothrow_move_constructible<_Tp>::value)
+  {
+    // We need compiler magic to handle types which are trivially relocatable,
+    // especially if they have throwing move-constructors.
+    __destroy_guard<_Tp> __g(__source);
+    return static_cast<_Tp&&>(*__source);
+  }
+
+  template<class _St, class _Dt>
+  inline _Dt *__libcpp_relocate_at2(long, _St *__source, _Dt *__dest)
+      _GLIBCXX_NOEXCEPT_IF((is_nothrow_constructible<_Dt, _St&&>::value))
+  {
+    __destroy_guard<_St> __g(__source);
+    return ::new (static_cast<void*>(__dest)) _Dt(static_cast<_St&&>(*__source));
+  }
+
+  template<class _St, class _Dt, typename enable_if<
+      is_same<__remove_cvref_t<_St>, __remove_cvref_t<_Dt> >::value &&
+      is_trivially_relocatable<__remove_cvref_t<_Dt> >::value &&
+      !is_volatile<_St>::value && !is_volatile<_Dt>::value,
+      int>::type = 0>
+  inline _Dt *__libcpp_relocate_at2(int, _St *__source, _Dt *__dest) _GLIBCXX_NOEXCEPT {
+    ::__builtin_memmove(__dest, __source, sizeof (_St));
+    return __dest;
+  }
+
+  template<class _Tp>
+  inline _Tp *relocate_at(_Tp *__source, _Tp *__dest)
+      _GLIBCXX_NOEXCEPT_IF(noexcept(std::__libcpp_relocate_at2(0, __source, __dest)))
+  {
+    static_assert(is_move_constructible<_Tp>::value && is_destructible<_Tp>::value,
+        "::new (voidify(*dest)) T(std::move(*source)) must be well-formed");
+    return std::__libcpp_relocate_at2(0, __source, __dest);
+  }
+#endif
+
   template<bool>
     struct _Destroy_aux
     {
