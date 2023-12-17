@@ -37,6 +37,7 @@
 #ifdef __glibcxx_move_only_function // C++ >= 23 && HOSTED
 
 #include <bits/invoke.h>
+#include <bits/stl_construct.h>
 #include <bits/utility.h>
 
 namespace std _GLIBCXX_VISIBILITY(default)
@@ -158,8 +159,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	    if (__src)
 	      {
 		_Tp* __rval = static_cast<_Tp*>(__src->_M_addr());
-		::new (__target._M_addr()) _Tp(std::move(*__rval));
-		__rval->~_Tp();
+		_Tp* __lval = static_cast<_Tp*>(__target._M_addr());
+		std::relocate_at(__rval, __lval);
 	      }
 	    else
 	      static_cast<_Tp*>(__target._M_addr())->~_Tp();
