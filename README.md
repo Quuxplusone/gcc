@@ -1,3 +1,10 @@
+[![Status](https://github.com/compiler-explorer/compiler-workflows/actions/workflows//build-daily-gcc_p1144.yml/badge.svg)](https://github.com/compiler-explorer/compiler-workflows/actions/workflows//build-daily-gcc_p1144.yml)![Last success](https://img.shields.io/badge/dynamic/json?color=success&label=Last+OK&query=%24.last_success.timestamp&url=https%3A%2F%2Flambda.compiler-explorer.com%2Fcompiler-build%2Fgcc_p1144)![Last build](https://img.shields.io/badge/dynamic/json?color=yellow&label=Last+build&query=%24.last_build.timestamp&url=https%3A%2F%2Flambda.compiler-explorer.com%2Fcompiler-build%2Fgcc_p1144)
+
+This fork of libstdc++ feeds the P1144 branch on [godbolt.org](https://godbolt.org/z/Mq1cj8KWK).
+For clang/libc++, see https://github.com/Quuxplusone/llvm-project/tree/trivially-relocatable
+
+----
+
 This directory contains the GNU Compiler Collection (GCC).
 
 The GNU Compiler Collection is free software.  See the files whose
