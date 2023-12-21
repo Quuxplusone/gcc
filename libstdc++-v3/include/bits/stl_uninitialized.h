@@ -64,6 +64,8 @@
 #include <ext/alloc_traits.h>     // __alloc_traits
 
 #if __cplusplus >= 201703L
+#include <bits/ptr_traits.h>
+#include <bits/stl_construct.h>
 #include <bits/stl_pair.h>
 #endif
 
@@ -1056,6 +1058,138 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	 __count, __result);
       return {__res.first.base(), __res.second};
     }
+
+#if __cplusplus >= 201703L
+  namespace __uninit_relocate_detail {
+#if __cpp_lib_concepts
+    template<typename _Iter>
+      concept __contiguous_iterator = contiguous_iterator<_Iter>;
+#else
+    template<typename _Iter>
+      constexpr bool __contiguous_iterator = false;
+    template<typename _Tp>
+      constexpr bool __contiguous_iterator<_Tp*> = true;
+    template<typename _Tp, typename _Seq>
+      constexpr bool __contiguous_iterator<__gnu_cxx::__normal_iterator<_Tp*, _Seq>> = true;
+#endif
+  } // namespace __uninit_relocate_detail
+
+  template <typename _InputIterator, typename _ForwardIterator>
+    inline _ForwardIterator
+    uninitialized_relocate(_InputIterator __first, _InputIterator __last,
+			   _ForwardIterator __result)
+    {
+      using _St = typename iterator_traits<_InputIterator>::value_type;
+      using _Dt = typename iterator_traits<_ForwardIterator>::value_type;
+      constexpr bool _ElementTypeIsMemcpyable =
+	is_same<__remove_cvref_t<_St>, __remove_cvref_t<_Dt>>::value &&
+	is_trivially_relocatable_v<_Dt> &&
+	!is_volatile_v<_St> && !is_volatile_v<_Dt>;
+      constexpr bool _SingleMemcpy =
+	_ElementTypeIsMemcpyable &&
+	__uninit_relocate_detail::__contiguous_iterator<_InputIterator> &&
+	__uninit_relocate_detail::__contiguous_iterator<_ForwardIterator>;
+      if constexpr (_SingleMemcpy) {
+	auto __count = __last - __first;
+	if (__count != 0) {
+	  char *__firstbyte = (char *)std::__to_address(__first);
+	  auto __nbytes = (char *)std::__to_address(__last) - __firstbyte;
+	  ::__builtin_memmove((void *)std::__to_address(__result), __firstbyte, __nbytes);
+	  __result += __count;
+	}
+      } else {
+	_ForwardIterator __orig_result = __result;
+	for (; __first != __last; ++__result, void(), ++__first) {
+	  __try {
+	    std::__libcpp_relocate_at2(0, std::addressof(*__first), std::addressof(*__result));
+	  } __catch (...) {
+	    std::destroy(__orig_result, __result);
+	    std::destroy(++__first, __last);
+	    __throw_exception_again;
+	  }
+	}
+      }
+      return __result;
+    }
+
+  template <typename _InputIterator, typename _Size, typename _ForwardIterator>
+    inline pair<_InputIterator, _ForwardIterator>
+    uninitialized_relocate_n(_InputIterator __first, _Size __n,
+			     _ForwardIterator __result)
+    {
+      using _St = typename iterator_traits<_InputIterator>::value_type;
+      using _Dt = typename iterator_traits<_ForwardIterator>::value_type;
+      constexpr bool _ElementTypeIsMemcpyable =
+	is_same<__remove_cvref_t<_St>, __remove_cvref_t<_Dt>>::value &&
+	is_trivially_relocatable_v<_Dt> &&
+	!is_volatile_v<_St> && !is_volatile_v<_Dt>;
+      constexpr bool _SingleMemcpy =
+	_ElementTypeIsMemcpyable &&
+	__uninit_relocate_detail::__contiguous_iterator<_InputIterator> &&
+	__uninit_relocate_detail::__contiguous_iterator<_ForwardIterator>;
+      if constexpr (_SingleMemcpy) {
+	if (__n != 0) {
+	  ::__builtin_memmove((void *)std::addressof(*__result), std::addressof(*__first), __n * sizeof(_Dt));
+	  __first += __n;
+	  __result += __n;
+	}
+      } else {
+	_ForwardIterator __orig_result = __result;
+	for (; __n > 0; ++__result, void(), ++__first, void(), --__n) {
+	  __try {
+	    std::__libcpp_relocate_at2(0, std::addressof(*__first), std::addressof(*__result));
+	  } __catch (...) {
+	    std::destroy(__orig_result, __result);
+	    for (++__first, void(), --__n; __n > 0; ++__first, void(), --__n) {
+	      std::destroy_at(std::addressof(*__first));
+	    }
+	    __throw_exception_again;
+	  }
+	}
+      }
+      return {__first, __result};
+    }
+
+  template <class _BidirIt1, class _BidirIt2>
+    inline _BidirIt2
+    uninitialized_relocate_backward(_BidirIt1 __first, _BidirIt1 __last,
+				    _BidirIt2 __result)
+    {
+      using _St = typename iterator_traits<_BidirIt1>::value_type;
+      using _Dt = typename iterator_traits<_BidirIt2>::value_type;
+      constexpr bool _ElementTypeIsMemcpyable =
+	is_same<__remove_cvref_t<_St>, __remove_cvref_t<_Dt>>::value &&
+	is_trivially_relocatable_v<_Dt> &&
+	!is_volatile_v<_St> && !is_volatile_v<_Dt>;
+      constexpr bool _SingleMemcpy =
+	_ElementTypeIsMemcpyable &&
+	__uninit_relocate_detail::__contiguous_iterator<_BidirIt1> &&
+	__uninit_relocate_detail::__contiguous_iterator<_BidirIt2>;
+      if constexpr (_SingleMemcpy) {
+	auto __count = __last - __first;
+	if (__count != 0) {
+	  char *__firstbyte = (char *)std::__to_address(__first);
+	  auto __nbytes = (char *)std::__to_address(__last) - __firstbyte;
+	  __result -= __count;
+	  ::__builtin_memmove((void *)std::__to_address(__result), __firstbyte, __nbytes);
+	}
+      } else {
+	_BidirIt2 __orig_result = __result;
+	while (__first != __last) {
+	  --__last;
+	  --__result;
+	  __try {
+	    std::__libcpp_relocate_at2(0, std::addressof(*__last), std::addressof(*__result));
+	  } __catch (...) {
+	    std::destroy(++__result, __orig_result);
+	    std::destroy(__first, __last);
+	    throw;
+	  }
+	}
+      }
+      return __result;
+    }
+#endif // __cplusplus >= 201703L
 #endif // __glibcxx_raw_memory_algorithms
 
 #if __cplusplus >= 201103L
