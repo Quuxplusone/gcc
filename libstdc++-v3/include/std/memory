@@ -124,6 +124,7 @@
 #define __glibcxx_want_start_lifetime_as
 #define __glibcxx_want_to_address
 #define __glibcxx_want_transparent_operators
+#define __glibcxx_want_trivially_relocatable
 #define __glibcxx_want_smart_ptr_owner_equality
 #include <bits/version.h>
 
