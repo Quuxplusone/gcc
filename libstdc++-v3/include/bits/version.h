@@ -174,6 +174,17 @@
 #endif /* !defined(__cpp_lib_coroutine) && defined(__glibcxx_want_coroutine) */
 #undef __glibcxx_want_coroutine
 
+// from version.def line FAKE, NO MERGE CONFLICTS PLEASE
+#if !defined(__cpp_lib_trivially_relocatable)
+# if (__cplusplus >= 201703L)
+#  define __glibcxx_trivially_relocatable 202401L
+#  if defined(__glibcxx_want_all) || defined(__glibcxx_want_trivially_relocatable)
+#   define __cpp_lib_trivially_relocatable 202401L
+#  endif
+# endif
+#endif /* !defined(__cpp_lib_trivially_relocatable) && defined(__glibcxx_want_trivially_relocatable) */
+#undef __glibcxx_want_trivially_relocatable
+
 // from version.def line 168
 #if !defined(__cpp_lib_exchange_function)
 # if (__cplusplus >= 201402L)
