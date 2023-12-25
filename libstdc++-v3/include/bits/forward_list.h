@@ -430,7 +430,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
    *  splicing, sorting, and in-place reversal.
    */
   template<typename _Tp, typename _Alloc = allocator<_Tp>>
-    class forward_list : private _Fwd_list_base<_Tp, _Alloc>
+    class _GLIBCXX_TRIVIALLY_RELOCATABLE_IF((is_same<_Alloc, allocator<_Tp> >::value)) forward_list : private _Fwd_list_base<_Tp, _Alloc>
     {
       static_assert(is_same<typename remove_cv<_Tp>::type, _Tp>::value,
 	  "std::forward_list must have a non-const, non-volatile value_type");
